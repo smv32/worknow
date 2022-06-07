@@ -1,9 +1,13 @@
 name: Continuous Integration
 on: [push]
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - run: echo $DAY
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
