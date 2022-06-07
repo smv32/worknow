@@ -8,7 +8,17 @@ import { IconContext } from 'react-icons';
 import supabase from '../helpers/supabase';
 import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
-import delay from 'delay';
+
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const signInSchema = yup.object({
+  email: yup
+    .string()
+    .required('Please enter your email address')
+    .email('Please provide a valid email address'),
+  password: yup.string().required('Please enter your password')
+});
 
 function Divider() {
   return (
@@ -49,29 +59,56 @@ type FormValues = {
   password: string;
 };
 
-async function onSubmit(data: FormValues) {
-  const { email, password } = data;
-  const { user, session, error } = await supabase.auth.signIn({
-    email,
-    password
-  });
-
-  if (error) {
-    alert(error.message);
-  }
-}
-
 const SignInForm = () => {
   const {
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+    clearErrors,
     handleSubmit,
+    setError,
     register
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    resolver: yupResolver(signInSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onBlur'
+  });
+
+  async function onSubmit(data: FormValues) {
+    const { email, password } = data;
+    const { user, session, error } = await supabase.auth.signIn({
+      email,
+      password
+    });
+
+    if (error) {
+      setError('email', { message: error.message });
+      throw error;
+    }
+  }
+  const errorField = errors.email
+    ? 'email'
+    : errors.password
+    ? 'password'
+    : null;
+
+  const errorMessage = !errorField ? '' : errors[errorField]?.message || '';
   return (
     <div className="w-full max-w-[24rem] space-y-8 px-8 py-10">
       <OAuthButtons />
       <Divider />
-      <form noValidate className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        noValidate
+        className="w-full space-y-4"
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={() => {
+          clearErrors();
+        }}
+      >
+        <div
+          className="mb-6 rounded-lg px-4 py-2 text-center text-sm text-rose-600"
+          role="alert"
+        >
+          {errorMessage}
+        </div>
         <div className="space-y-10">
           <Input label="Email" type="email" id="email" {...register('email')} />
           <Input label="Password" type="password" {...register('password')} />
@@ -84,7 +121,8 @@ const SignInForm = () => {
               <FaLock />
             </IconContext.Provider>
             <span className="flex grow justify-center text-center">
-              {isSubmitting ? <Spinner /> : 'Sign In'}
+              {isSubmitting ? <Spinner /> : 'Sign In'}{' '}
+              {isSubmitSuccessful ? '123' : '111'}
             </span>
           </button>
         </div>

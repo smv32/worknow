@@ -13,6 +13,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         placeholder={label}
         {...props}
       />
+      {/* {}
+      <span className='text-sm font-medium text-rose-600 px-2 mt-2'>Error Message</span> */}
     </div>
   )
 );
