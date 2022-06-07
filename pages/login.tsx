@@ -61,7 +61,7 @@ type FormValues = {
 
 const SignInForm = () => {
   const {
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     clearErrors,
     handleSubmit,
     setError,
@@ -122,7 +122,6 @@ const SignInForm = () => {
             </IconContext.Provider>
             <span className="flex grow justify-center text-center">
               {isSubmitting ? <Spinner /> : 'Sign In'}{' '}
-              {isSubmitSuccessful ? '123' : '111'}
             </span>
           </button>
         </div>
