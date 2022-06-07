@@ -9,7 +9,7 @@ jobs:
         with:
           node-version: latest
           cache: 'npm'
-      
+
       - run: npm ci
       - run: npm run build
   unit-tests:
@@ -20,7 +20,6 @@ jobs:
         with:
           node-version: latest
           cache: 'npm'
-      
+
       - run: npm ci
       - run: npm run test:ci
-  
