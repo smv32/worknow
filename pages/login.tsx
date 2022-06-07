@@ -3,9 +3,12 @@ import Head from 'next/head';
 import Input from '../components/Input';
 
 import { FcGoogle } from 'react-icons/fc';
-import { FaApple } from 'react-icons/fa';
+import { FaApple, FaLock } from 'react-icons/fa';
 import { IconContext } from 'react-icons';
 import supabase from '../helpers/supabase';
+import { useForm } from 'react-hook-form';
+import Spinner from '../components/Spinner';
+import delay from 'delay';
 
 function Divider() {
   return (
@@ -21,15 +24,18 @@ function Divider() {
 function OAuthButtons() {
   return (
     <IconContext.Provider value={{ size: '1.5rem' }}>
-      <div className="grid  gap-4">
+      <div className="grid  gap-6">
         <button
-          className="flex h-11 w-full items-center rounded-md border border-gray-300 bg-white px-8 text-zinc-500"
-          onClick={() => supabase.auth.signIn({ provider: 'apple' })}
+          className="flex h-11 w-full items-center rounded-md border border-gray-300 bg-white px-8 font-medium text-slate-600 outline-none ring-gray-200 ring-offset-1 transition-colors hover:bg-zinc-50  focus:bg-zinc-50 focus:ring-1"
+          onClick={() => supabase.auth.signIn({ provider: 'google' })}
         >
           <FcGoogle />
           <span className="grow">Sign in with Google</span>
         </button>
-        <button className="flex h-11 w-full items-center rounded-md bg-black px-8 text-zinc-50">
+        <button
+          className="flex h-11 w-full items-center rounded-md border border-black bg-black px-8 font-medium text-zinc-50 outline-none ring-gray-800 ring-offset-1 transition-colors hover:bg-gray-900 focus:bg-gray-900 focus:ring-1"
+          onClick={() => supabase.auth.signIn({ provider: 'apple' })}
+        >
           <FaApple />
           <span className="grow">Sign in with Apple</span>
         </button>
@@ -38,15 +44,49 @@ function OAuthButtons() {
   );
 }
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
+async function onSubmit(data: FormValues) {
+  const { email, password } = data;
+  const { user, session, error } = await supabase.auth.signIn({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+  }
+}
+
 const SignInForm = () => {
+  const {
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    register
+  } = useForm<FormValues>();
   return (
-    <div className="w-full max-w-[24rem] space-y-10 px-8 py-10">
+    <div className="w-full max-w-[24rem] space-y-8 px-8 py-10">
       <OAuthButtons />
       <Divider />
-      <form action="w-full">
+      <form noValidate className="w-full" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-10">
-          <Input label="Email" type="email" id="email" />
-          <Input label="Password" type="password" />
+          <Input label="Email" type="email" id="email" {...register('email')} />
+          <Input label="Password" type="password" {...register('password')} />
+
+          <button
+            className="flex h-11 w-full items-center rounded-md bg-blue-600 px-8 font-medium tracking-wide text-white disabled:cursor-pointer disabled:bg-blue-400"
+            disabled={isSubmitting}
+          >
+            <IconContext.Provider value={{ className: 'text-blue-300' }}>
+              <FaLock />
+            </IconContext.Provider>
+            <span className="flex grow justify-center text-center">
+              {isSubmitting ? <Spinner /> : 'Sign In'}
+            </span>
+          </button>
         </div>
       </form>
     </div>
