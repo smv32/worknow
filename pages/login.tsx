@@ -30,14 +30,23 @@ function Divider() {
     </div>
   );
 }
-
+async function onClick() {
+  const { user, error, session } = await supabase.auth.signIn({
+    provider: 'google'
+  },{
+    redirectTo: 'http://localhost:3000/auth/handler'
+  });
+  if (user != null) {
+    alert('signed in');
+  }
+}
 function OAuthButtons() {
   return (
     <IconContext.Provider value={{ size: '1.5rem' }}>
       <div className="grid  gap-6">
         <button
           className="flex h-11 w-full items-center rounded-md border border-gray-300 bg-white px-8 font-medium text-slate-600 outline-none ring-gray-200 ring-offset-1 transition-colors hover:bg-zinc-50  focus:bg-zinc-50 focus:ring-1"
-          onClick={() => supabase.auth.signIn({ provider: 'google' })}
+          onClick={onClick}
         >
           <FcGoogle />
           <span className="grow">Sign in with Google</span>
