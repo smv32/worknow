@@ -18,6 +18,8 @@
     "trailingComma": "none"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.4",
+    "@heroicons/react": "^1.0.6",
     "@supabase/supabase-js": "^1.35.3",
     "next": "12.1.6",
     "react": "18.1.0",
