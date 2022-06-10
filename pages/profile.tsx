@@ -24,7 +24,6 @@ function Input() {
 }
 
 const Profile: NextPage = () => {
-  const { user, isLoading } = useUser();
 
   return (
     <>
