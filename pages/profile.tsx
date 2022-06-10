@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
-import useUser from '../hooks/useUser';
 
 import * as Label from '@radix-ui/react-label';
 
