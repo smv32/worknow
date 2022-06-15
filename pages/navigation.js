@@ -2,6 +2,8 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { useState } from 'react'
+import { Switch } from '@headlessui/react'
 
 const navigation = [
   { name: 'Home', href: '#', current: true },
@@ -14,6 +16,7 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const [enabled, setEnabled] = useState(false)
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -55,8 +58,19 @@ export default function Example() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-  
-
+              <Switch
+                  checked={enabled}
+                  onChange={setEnabled}
+                  className={`${enabled ? 'bg-blue-600' : 'bg-blue-300'}
+          relative inline-flex h-[24px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                >
+                  <span className="sr-only">Login</span>
+                  <span
+                    aria-hidden="true"
+                    className={`${enabled ? 'translate-x-4' : 'translate-x-0'}
+            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                  />
+                </Switch>
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
