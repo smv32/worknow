@@ -140,7 +140,7 @@ const SignInForm = () => {
         </div>
       </form>
       <div className='flex flex-col justify-center items-center gap-1'>
-        <span className='text-gray-500'>Don't have an account?</span>
+        <span className='text-gray-500'>Don&apos;t have an account?</span>
         <Link href="/signup"><a className='text-blue-600 font-medium hover:underline'>Sign Up</a></Link>
       </div>
     </div>
