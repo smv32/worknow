@@ -11,6 +11,7 @@ import Spinner from '../components/Spinner';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Link from 'next/link';
 
 const signInSchema = yup.object({
   email: yup
@@ -150,6 +151,10 @@ const SignInForm = () => {
           </button>
         </div>
       </form>
+      <div className='flex flex-col justify-center items-center gap-1'>
+        <span className='text-gray-500'>Already a user?</span>
+        <Link href="/login"><a className='text-blue-600 font-medium hover:underline'>Sign in</a></Link>
+      </div>
     </div>
   );
 };

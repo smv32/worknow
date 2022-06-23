@@ -11,6 +11,7 @@ import Spinner from '../components/Spinner';
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Link from 'next/link';
 
 const signInSchema = yup.object({
   email: yup
@@ -31,11 +32,14 @@ function Divider() {
   );
 }
 async function onClick() {
-  const { user, error, session } = await supabase.auth.signIn({
-    provider: 'google'
-  },{
-    redirectTo: 'http://localhost:3000/auth/handler'
-  });
+  const { user, error, session } = await supabase.auth.signIn(
+    {
+      provider: 'google'
+    },
+    {
+      redirectTo: 'http://localhost:3000/auth/handler'
+    }
+  );
   if (user != null) {
     alert('signed in');
   }
@@ -135,6 +139,10 @@ const SignInForm = () => {
           </button>
         </div>
       </form>
+      <div className='flex flex-col justify-center items-center gap-1'>
+        <span className='text-gray-500'>Don't have an account?</span>
+        <Link href="/signup"><a className='text-blue-600 font-medium hover:underline'>Sign Up</a></Link>
+      </div>
     </div>
   );
 };
