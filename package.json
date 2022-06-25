@@ -18,14 +18,20 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.4",
+    "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^1.0.6",
+    "@hookform/resolvers": "^2.9.0",
     "@supabase/supabase-js": "^1.35.3",
+    "delay": "^5.0.0",
     "next": "12.1.6",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "react-hook-form": "^7.31.3",
+    "react-icons": "^4.4.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@types/node": "17.0.40",
