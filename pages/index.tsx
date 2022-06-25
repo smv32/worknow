@@ -1,3 +1,4 @@
+import delay from 'delay';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -39,6 +40,20 @@ function Filter() {
 }
 
 const Home: NextPage = () => {
+  const { user, isLoading, isSignedIn } = useUser();
+  const router = useRouter();
+
+  console.log(isSignedIn, isLoading);
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (!isSignedIn) {
+    // router.push('/login')
+  }
+  delay(1000).then(() =>
+    console.log(isSignedIn, supabase.auth.session(), supabase.auth.user())
+  );
   return (
     <>
       <Head>
