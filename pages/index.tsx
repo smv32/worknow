@@ -7,11 +7,11 @@ import supabase from '../helpers/supabase';
 import { useEffect, useState } from 'react';
 import { formatDistance } from 'date-fns';
 
-import * as Checkbox from '@radix-ui/react-checkbox'
-import * as Label from '@radix-ui/react-label'
+import * as Checkbox from '@radix-ui/react-checkbox';
+import * as Label from '@radix-ui/react-label';
 import NavigationMenu from '../components/NavigationMenu';
-
-
+import useUser from '../hooks/useUser';
+import { useRouter } from 'next/router';
 
 function Filter() {
   return (
@@ -22,38 +22,33 @@ function Filter() {
         </h2>
       </div>
       <div>
-        <input type="text" className='border w-full rounded-lg h-11 px-4' placeholder='Company, role, tag...'/>
+        <input
+          type="text"
+          className="h-11 w-full rounded-lg border px-4"
+          placeholder="Company, role, tag..."
+        />
       </div>
-      <div className='flex items-center mt-4 gap-3'>
-        <Checkbox.Root className='appearance-none border bg-white w-5 h-5 rounded flex items-center justify-center shadow-sm'>
-          <Checkbox.Indicator className='text-gray-500'><HiCheck /></Checkbox.Indicator>
+      <div className="mt-4 flex items-center gap-3">
+        <Checkbox.Root className="flex h-5 w-5 appearance-none items-center justify-center rounded border bg-white shadow-sm">
+          <Checkbox.Indicator className="text-gray-500">
+            <HiCheck />
+          </Checkbox.Indicator>
         </Checkbox.Root>
-       <Label.Root>Full Time</Label.Root>
-      </div> <div className='flex items-center mt-4 gap-3'>
-        <Checkbox.Root className='appearance-none border bg-white w-5 h-5 rounded flex items-center justify-center shadow-sm'>
-          <Checkbox.Indicator className='text-gray-500'><HiCheck /></Checkbox.Indicator>
+        <Label.Root>Full Time</Label.Root>
+      </div>{' '}
+      <div className="mt-4 flex items-center gap-3">
+        <Checkbox.Root className="flex h-5 w-5 appearance-none items-center justify-center rounded border bg-white shadow-sm">
+          <Checkbox.Indicator className="text-gray-500">
+            <HiCheck />
+          </Checkbox.Indicator>
         </Checkbox.Root>
-       <Label.Root>Part Time</Label.Root>
+        <Label.Root>Part Time</Label.Root>
       </div>
     </div>
   );
 }
 
 const Home: NextPage = () => {
-  const { user, isLoading, isSignedIn } = useUser();
-  const router = useRouter();
-
-  console.log(isSignedIn, isLoading);
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
-  if (!isSignedIn) {
-    // router.push('/login')
-  }
-  delay(1000).then(() =>
-    console.log(isSignedIn, supabase.auth.session(), supabase.auth.user())
-  );
   return (
     <>
       <Head>
@@ -71,11 +66,12 @@ const Home: NextPage = () => {
 };
 
 const Content = () => {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetch() {
       const response = await supabase.from('jobs').select('*');
+      // @ts-ignore
       setJobs(response.data);
     }
 
@@ -84,8 +80,11 @@ const Content = () => {
 
   return (
     <div className="mx-auto mt-12 flex w-full flex-col divide-y rounded-xl">
-      {jobs.map((job) => (
-        <div className="flex w-full cursor-pointer items-center justify-between px-12  py-3 transition-colors hover:bg-zinc-50">
+      {jobs.map((job, idx) => (
+        <div
+          key={idx}
+          className="flex w-full cursor-pointer items-center justify-between px-12  py-3 transition-colors hover:bg-zinc-50"
+        >
           <div className="flex flex-col gap-2">
             <h4 className="text-2xl font-medium tracking-wide text-gray-800">
               {job.title}
