@@ -18,6 +18,8 @@
     "trailingComma": "none"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.5",
+    "@heroicons/react": "^1.0.6",
     "@hookform/resolvers": "^2.9.0",
     "@supabase/supabase-js": "^1.35.3",
     "delay": "^5.0.0",
