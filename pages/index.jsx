@@ -1,11 +1,12 @@
 import {ClipboardListIcon, ClockIcon} from '@heroicons/react/outline'
-import Features from "./features"
-import Testimonials from './testimonials'
+import Features from "../components/features"
+import Header from '../components/navigation'
+import Testimonials from '../components/testimonials'
 
 export default function Home() {
   return (
     <div className="w-full h-full bg-gray-900">
-
+    <Header />
       <div className="py-20 bg-gradient-to-r from-cyan-500 to-blue-500">
         <div className="text-center container mx-auto px-6">
           
