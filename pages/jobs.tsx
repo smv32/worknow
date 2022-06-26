@@ -1,4 +1,3 @@
-import delay from 'delay';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -10,8 +9,6 @@ import { formatDistance } from 'date-fns';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import * as Label from '@radix-ui/react-label';
 import NavigationMenu from '../components/NavigationMenu';
-import useUser from '../hooks/useUser';
-import { useRouter } from 'next/router';
 
 function Filter() {
   return (
@@ -52,7 +49,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home | WorkNow</title>
+        <title>Opportunities | WorkNow</title>
       </Head>
       <div className="min-h-screen w-full">
         <NavigationMenu />

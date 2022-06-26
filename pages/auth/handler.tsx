@@ -12,7 +12,7 @@ const Handler: NextPage = () => {
       });
 
       if (!error) {
-        router.push('/', undefined, {});
+        router.push('/jobs', undefined, {});
       } else{
           console.log(error)
       }

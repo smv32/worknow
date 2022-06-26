@@ -1,22 +1,17 @@
-import clsx from "clsx";
-import Link from "next/link";
+import * as Avatar from '@radix-ui/react-avatar';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import clsx from 'clsx';
+import initials from 'initials';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import supabase from '../helpers/supabase';
+import useUser from '../hooks/useUser';
 
 const links = ['Home', 'Jobs', 'Resources'];
 const Navbar = () => {
   return (
     <nav className="bg-white px-4 py-3">
-      <div className="container mx-auto flex justify-between border-b">
-        <a href="https://flowbite.com/" className="flex items-center py-2 pb-4">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="mr-3 h-6 sm:h-9"
-            alt="Flowbite Logo"
-          />
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Flowbite
-          </span>
-        </a>
-
+      <div className="container mx-auto flex justify-between border-b py-4">
         <div>
           <ul className="flex h-12 items-center gap-2">
             {links.map((link, idx) => (
@@ -36,17 +31,47 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        <div className="flex h-12 items-center gap-8">
-          <button className="text-sm font-semibold tracking-wide">
-            Sign In
-          </button>
-          <button className="appearance-none rounded bg-blue-600 px-4 py-2 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-blue-700">
-            Create Account
-          </button>
-        </div>
+        <UserStatus />
       </div>
     </nav>
   );
 };
+
+function UserStatus() {
+  const { isLoading, user } = useUser();
+  const router = useRouter();
+
+  if (isLoading) {
+    return null;
+  }
+  if (!user) {
+    return (
+      <div className="flex h-12 items-center gap-8">
+        <Link href={'/login'}>
+          <button className="text-sm font-semibold tracking-wide">
+            Sign In
+          </button>
+        </Link>
+        <Link href={'/signup'}>
+          <button className="appearance-none rounded bg-blue-600 px-4 py-2 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-blue-700">
+            Create Account
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
+  const name = user.user_metadata.full_name;
+
+  return (
+    <div>
+      <Avatar.Root className="inline-flex h-10 w-10 cursor-pointer select-none items-center justify-center rounded-full bg-black">
+        <Avatar.Fallback className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black font-medium text-white ring-2 ring-gray-900 ring-offset-2">
+          {initials(name)}
+        </Avatar.Fallback>
+      </Avatar.Root>
+    </div>
+  );
+}
 
 export default Navbar;
