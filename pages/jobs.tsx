@@ -49,7 +49,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home | WorkNow</title>
+        <title>Opportunities | WorkNow</title>
       </Head>
       <div className="min-h-screen w-full">
         <NavigationMenu />
