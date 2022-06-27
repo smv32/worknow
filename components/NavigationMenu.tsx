@@ -4,8 +4,10 @@ import clsx from 'clsx';
 import initials from 'initials';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import supabase from '../helpers/supabase';
+import { Menu } from '@headlessui/react';
+
 import useUser from '../hooks/useUser';
+import supabase from '../helpers/supabase';
 
 const links = ['Home', 'Jobs', 'Resources'];
 const Navbar = () => {
@@ -65,13 +67,40 @@ function UserStatus() {
 
   return (
     <div>
-      <Avatar.Root className="inline-flex h-10 w-10 cursor-pointer select-none items-center justify-center rounded-full bg-black">
-        <Avatar.Fallback className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black font-medium text-white ring-2 ring-gray-900 ring-offset-2">
-          {initials(name)}
-        </Avatar.Fallback>
-      </Avatar.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <UserProfile name={name || 'Z'} />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          className="z-50 w-40 rounded-xl border bg-white shadow-lg"
+          align="end"
+          sideOffset={12}
+        >
+          <DropdownMenu.Item>
+            <button
+              className="w-full px-4 py-2 text-left text-slate-500 hover:bg-gray-100"
+              onClick={() => {
+                supabase.auth.signOut();
+                router.push('/');
+              }}
+            >
+              Sign Out
+            </button>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </div>
   );
 }
+
+const UserProfile = ({ name }: { name: string }) => {
+  return (
+    <Avatar.Root className="inline-flex h-10 w-10 cursor-pointer select-none items-center justify-center rounded-full bg-black">
+      <Avatar.Fallback className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black font-medium text-white ring-2 ring-gray-900 ring-offset-2">
+        {initials(name)}
+      </Avatar.Fallback>
+    </Avatar.Root>
+  );
+};
 
 export default Navbar;
