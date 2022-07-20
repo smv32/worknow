@@ -8,6 +8,7 @@ export interface Job {
 	company: string;
 	createdAt: string;
 	partTime: boolean;
+	location: string;
 }
 
 export const fullTimeFilter = atom(false);
